@@ -20,7 +20,24 @@ public class MovieController {
 
     // Endpoint to create a new movie
     @PostMapping
-    public ResponseEntity<MovieModel> createMovie(@RequestBody MovieModel movie) {
+    public ResponseEntity<?> createMovie(@RequestBody MovieModel movie) {
+        // Validate Movie input
+        if (isNullOrEmpty(movie.getTitle()) ||
+                isNullOrEmpty(movie.getGenre()) ||
+                movie.getReleaseYear() == 0 ||
+                isNullOrEmpty(movie.getOverview()) ||
+                isNullOrEmpty(movie.getSmallPoster()) ||
+                isNullOrEmpty(movie.getLargePoster()) ||
+                movie.getRentPrice() == 0 ||
+                movie.getBuyPrice() == 0 ||
+                movie.getFeatured() == null ||
+                isNullOrEmpty(movie.getCast()) ||
+                isNullOrEmpty(movie.getDirector()) ||
+                isNullOrEmpty(movie.getReleaseDate()) ||
+                isNullOrEmpty(movie.getAwards())) {
+
+            return ResponseEntity.badRequest().body("All fields are required and must be valid.");
+        }
         return ResponseEntity.status(201).body(movieService.createMovie(movie));
     }
 
@@ -57,8 +74,9 @@ public class MovieController {
             MovieModel updatedMovie = movieService.update(id, movie);
             return ResponseEntity.ok(Map.of("message", "Movie updated successfully", "movie", updatedMovie));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Error updating TV show", "error", e.getMessage()));
-        } 
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "Error updating TV show", "error", e.getMessage()));
+        }
     }
 
     // Endpoint to delete a movie by ID
@@ -66,5 +84,10 @@ public class MovieController {
     public ResponseEntity<Void> deleteMovie(@RequestParam String id) {
         movieService.deleteMovie(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Helper method for null/empty string check
+    private boolean isNullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty();
     }
 }

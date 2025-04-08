@@ -20,7 +20,25 @@ public class TvShowController {
 
     // Endpoint to create a new TV show
     @PostMapping
-    public ResponseEntity<TvShowModel> createTvShow(@RequestBody TvShowModel tvShow) {
+    public ResponseEntity<?> createTvShow(@RequestBody TvShowModel tvShow) {
+
+        // Validate TV show input
+        if (isNullOrEmpty(tvShow.getTitle()) ||
+                isNullOrEmpty(tvShow.getGenre()) ||
+                tvShow.getReleaseYear() == 0 ||
+                isNullOrEmpty(tvShow.getOverview()) ||
+                isNullOrEmpty(tvShow.getSmallPoster()) ||
+                isNullOrEmpty(tvShow.getLargePoster()) ||
+                tvShow.getRentPrice() == 0 ||
+                tvShow.getBuyPrice() == 0 ||
+                tvShow.getFeatured() == null || 
+                isNullOrEmpty(tvShow.getCast()) ||
+                isNullOrEmpty(tvShow.getDirector()) ||
+                isNullOrEmpty(tvShow.getReleaseDate()) ||
+                isNullOrEmpty(tvShow.getEpisodes())) {
+
+            return ResponseEntity.badRequest().body("All fields are required and must be valid.");
+        }
         return ResponseEntity.status(201).body(tvShowService.create(tvShow));
     }
 
@@ -57,8 +75,9 @@ public class TvShowController {
             TvShowModel updatedTvShow = tvShowService.update(id, tvShow);
             return ResponseEntity.ok(Map.of("message", "TV show updated successfully", "tvShow", updatedTvShow));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Error updating TV show", "error", e.getMessage()));
-        } 
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "Error updating TV show", "error", e.getMessage()));
+        }
     }
 
     // Endpoint to delete a TV show by ID
@@ -66,5 +85,10 @@ public class TvShowController {
     public ResponseEntity<Void> deleteTvShow(@RequestParam String id) {
         tvShowService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Helper method for null/empty string check
+    private boolean isNullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty();
     }
 }
