@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -51,8 +52,13 @@ public class MovieController {
 
     // Endpoint to update a movie by ID
     @PutMapping("/id")
-    public ResponseEntity<MovieModel> updateMovie(@RequestParam String id, @RequestBody MovieModel movie) {
-        return ResponseEntity.ok(movieService.updateMovie(id, movie));
+    public ResponseEntity<?> updateMovie(@RequestParam String id, @RequestBody MovieModel movie) {
+        try {
+            MovieModel updatedMovie = movieService.update(id, movie);
+            return ResponseEntity.ok(Map.of("message", "Movie updated successfully", "movie", updatedMovie));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Error updating TV show", "error", e.getMessage()));
+        } 
     }
 
     // Endpoint to delete a movie by ID

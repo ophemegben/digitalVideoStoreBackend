@@ -21,14 +21,7 @@ public class TvShowModel {
     private String largePoster;
     private double rentPrice;
     private double buyPrice;
-    private boolean featured;
-    private TvShowDetails details; // Additional details about the TV show e.g., director, cast, releaseDate.
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class TvShowDetails {
+    private Boolean featured;
     private String cast;
     private String director;
     private String releaseDate;

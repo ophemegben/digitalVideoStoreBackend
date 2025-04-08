@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tvshows")
@@ -51,8 +52,13 @@ public class TvShowController {
 
     // Endpoint to update a TV show by ID
     @PutMapping("/id")
-    public ResponseEntity<TvShowModel> updateTvShow(@RequestParam String id, @RequestBody TvShowModel tvShow) {
-        return ResponseEntity.ok(tvShowService.update(id, tvShow));
+    public ResponseEntity<?> updateTvShow(@RequestParam String id, @RequestBody TvShowModel tvShow) {
+        try {
+            TvShowModel updatedTvShow = tvShowService.update(id, tvShow);
+            return ResponseEntity.ok(Map.of("message", "TV show updated successfully", "tvShow", updatedTvShow));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Error updating TV show", "error", e.getMessage()));
+        } 
     }
 
     // Endpoint to delete a TV show by ID

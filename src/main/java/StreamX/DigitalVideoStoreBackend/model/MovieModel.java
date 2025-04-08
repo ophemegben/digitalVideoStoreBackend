@@ -21,14 +21,7 @@ public class MovieModel {
     private String largePoster;
     private double rentPrice;
     private double buyPrice;
-    private boolean featured; 
-    private MovieDetails details; // Additional details about the movie e.g., director, cast, releaseDate.
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class MovieDetails {
+    private Boolean featured; 
     private String cast;
     private String director;
     private String releaseDate;
