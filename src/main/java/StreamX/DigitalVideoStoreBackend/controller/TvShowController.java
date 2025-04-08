@@ -82,9 +82,9 @@ public class TvShowController {
 
     // Endpoint to delete a TV show by ID
     @DeleteMapping("/id")
-    public ResponseEntity<Void> deleteTvShow(@RequestParam String id) {
+    public ResponseEntity<?> deleteTvShow(@RequestParam String id) {
         tvShowService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(Map.of("message", "TV show deleted successfully"));
     }
 
     // Helper method for null/empty string check

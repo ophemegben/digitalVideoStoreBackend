@@ -81,9 +81,9 @@ public class MovieController {
 
     // Endpoint to delete a movie by ID
     @DeleteMapping("/id")
-    public ResponseEntity<Void> deleteMovie(@RequestParam String id) {
+    public ResponseEntity<?> deleteMovie(@RequestParam String id) {
         movieService.deleteMovie(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(Map.of("message", "Movie deleted successfully"));
     }
 
     // Helper method for null/empty string check
