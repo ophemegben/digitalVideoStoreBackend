@@ -37,9 +37,9 @@ public class TvShowController {
                 isNullOrEmpty(tvShow.getReleaseDate()) ||
                 isNullOrEmpty(tvShow.getEpisodes())) {
 
-            return ResponseEntity.badRequest().body("All fields are required and must be valid.");
+            return ResponseEntity.badRequest().body(Map.of("message", "All fields are required and must be valid."));
         }
-        return ResponseEntity.status(201).body(tvShowService.create(tvShow));
+        return ResponseEntity.status(201).body(Map.of("message", "Tv show successfully created", "tvShow", tvShowService.create(tvShow)));
     }
 
     // Endpoint to get all TV shows

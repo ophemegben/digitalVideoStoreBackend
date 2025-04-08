@@ -36,9 +36,9 @@ public class MovieController {
                 isNullOrEmpty(movie.getReleaseDate()) ||
                 isNullOrEmpty(movie.getAwards())) {
 
-            return ResponseEntity.badRequest().body("All fields are required and must be valid.");
+            return ResponseEntity.badRequest().body(Map.of("message", "All fields are required and must be valid."));
         }
-        return ResponseEntity.status(201).body(movieService.createMovie(movie));
+        return ResponseEntity.status(201).body(Map.of("message", "Movie successfully created", "movie", movieService.createMovie(movie)));
     }
 
     // Endpoint to get all movies
