@@ -1,5 +1,7 @@
 package StreamX.DigitalVideoStoreBackend;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -42,7 +44,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("https://digital-video-store-lake.vercel.app/");
+        config.setAllowedOrigins(List.of("https://digital-video-store-lake.vercel.app/",
+        "http://localhost:3000"));
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
